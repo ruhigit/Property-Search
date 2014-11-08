@@ -1,0 +1,78 @@
+<html>
+<head>
+<meta name="viewport" content=" width=device-width,initial-scale=1,maximum-scale=1"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js">
+</script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+</head>
+<body>
+<div class="form-group">
+<label for="address">Street Address*:</label>
+<input type="text" class="form-control" placeholder="Address" id="streetInput" name="streetInput" autocomplete="on"></div>
+    <div class="form-group">
+<label for="City">City*:</label>
+<input type="text" class="form-control" placeholder="City" id="cityInput" name="cityInput" autocomplete="on"></div>
+    <div class="form-group">
+<label for="State">State*:</label>
+<select type="state" class="form-control" placeholder="State" id="stateInput" name="stateInput">
+    <option value=""></option>
+    <option value="AL">AL</option>
+    </div>
+        
+        <!-- submit button, onclick javascript for validation place zillow
+Define area for error msgs
+Set up tabs where results-->
+        <ul class="nav nav-tabs" role="tablist" id="mytab">
+            <li class="active">
+                <a href="#Basic-Info" role="tab" data-toggle="tab">Basic Info</a>
+            </li>
+            <li>
+                <a href="#chart" role="tab" data-toggle="tab">Historical Zestimates</a>
+            </li>
+        </ul>
+        
+    <div class="tab-pane fade in active" id="Basic-Info">
+        <div id="tableDiv" class='table-responsive'>
+            <table id="basic-info" class="table table-striped">
+                <tr>
+                    <td class="align-left" colspan="5">See more details for<a href="#"class="toZillow">address</a> on Zillow <a href=\"javascript:fb_post();\"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-left">Property Type:</td>
+                    <td class="align-right"></td>
+                    <td class="align-left">Last Sold Price:</td>
+                    <td class="align-right"></td>
+                </tr>
+            </table>
+        </div>
+        </div>
+</body>
+<script>
+    function fb_post(){
+        FB.ui(
+            {
+                method:'feed',
+                name:grab the street,city and state from JSON,
+                caption:"Property Information from Zillow.com",
+                description:Grab the last sold price from json,
+                display:'popup',
+                link:grab home details,
+                picture:grab 1 yr chart from JSON},
+            
+    function(response)
+            {
+                if(response && response.post_id){
+                    alert("Posted Successfully");
+                }
+                else{
+                    alert("Not Posted");
+                }
+                
+            });
+            }
+    </script>
+     
+</html>
