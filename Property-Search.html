@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
 $(document).ready(function (e) {
-
+$("#maintable").hide();
             $("#houseform").validate({
 
                 rules:
@@ -29,25 +29,21 @@ $(document).ready(function (e) {
                     var city = form[1].value;
                     var street = form[0].value;
                     var state = form[2].value;
-					$("#main").hide();
+					$("#maintable").hide();
                     alert(city + " - " + street + " - " + state);
 
                     $.ajax
                     ({
 
-                        url: "index.php",
+                        url: 'http://zillowruhi-env.elasticbeanstalk.com',
                         type: 'GET',
                         data: $.param({ stateInput: state, cityInput: city, streetInput: street }),
                         dataType:'json',
                         success: function (data, textStatus, jqxhr)
                         {
                            alert("success");
-                            /*var myobj=data;
-                            console.log(myobj);*/
-                            /*console.log(data);
-                            alert(data.value);*/
-                            /* write your code after getting the response here
-							// change the names and everything */
+                            address=data.result.street+data.result.city+data.result.state;
+                            maintable(data);
                        },
                         error: function (jqxhr, textStatus, errorMessage) {
                             console.log(errorMessage);
@@ -60,7 +56,6 @@ $(document).ready(function (e) {
 </script>
 <script>
     window.fbAsyncInit = function() {
-        console.log("hey");
          FB.init({
     appId      : '752542048155527',
     //status     : true,
@@ -103,28 +98,47 @@ $(document).ready(function (e) {
             }
     
 </script>
-        
+<script>
+        function maintable(data)
+        {
+            $("#maintable").show();
+            
+            $("#property").text(data.result.useCode);
+            $("#lastsoldprice").text(data.result.lastSoldPrice);
+            $("#yearbuilt").text(data.result.yearBuilt);
+            $("#lastsolddate").text(data.result.lastSoldDate);
+            $("#lotsize").text(data.result.lotSizeSqFt);
+            $("#zestimate").text(data.result.estimateAmount);
+            $("#finishedarea").text(data.result.finishedSqFt);
+            $("#change").text(data.result.estimateValueChange);
+            $("#bathrooms").text(data.result.bathrooms);
+            $("#range").text(data.result.estimateValuationRangeLow);
+            $("#bedrooms").text(data.result.bedrooms);
+            $("#rent").text(data.result.restimateAmount);
+            $("#year").text(data.result.taxAssessmentYear);
+            $("#rentchange").text(data.result.restimateValueChange);
+            $("#tax").text(data.result.taxAssessment);
+            $("#allrange").text(data.result.restimateValuationRangeLow);
+            
+            addresslink=data.result.homedetails;
+            a = document.getElementById("addresslink");
+            a.setAttribute("href", addresslink);
+            return true;
+   }
+</script>   
 </head>
     <style>
         body{
             padding: 5px 10px 10px 20px;
             background-image:url("image.jpg");
-            color:orange;
         }
-        houseform .form-group label.error {
+        label.error {
         color: #FB3A3A;
-        display:block;
-        padding:5px 10px 5px 50px;
         text-align:center;
 }
         #zillowImage{
             position: relative;
             float: right;
-        }
-        #errorbox{
-            visibility: hidden;
-            position: absolute;
-            display: block;
         }
         #fbimage{
             position: relative;
@@ -135,190 +149,212 @@ $(document).ready(function (e) {
     </style>
 <body>
     
-
-
-    
-    
     <h3>Search Your Property Here</h3><br> 
     <form class="form-inline" role="form" id="houseform"  action="" class="js-ajax-php-json" method="get" accept-charset="utf-8">
         <div class="col-lg-4">
-  <div class="form-group" >
-      <label for="address">Street Address*:</label>
-        <input type="text" class="form-control" placeholder="Address" id="streetInput" name="streetInput" autocomplete="on"> 
-</div>
-</div>
-<div class="col-lg-3" class="form-group" >
-      <label for="City">City*:</label>
-    <input type="text" class="form-control" placeholder="City" id="cityInput" name="cityInput" autocomplete="on">
-</div>
-<div class="col-lg-2" class="form-group" >
-      <label for="State">State*:</label>
-<select type="state" class="form-control" placeholder="State" id="stateInput" name="stateInput">
-    <option value=""></option>
-    <option value="AL">AL</option>
-	<option value="AR">AR</option>
-			<option value="AZ">AZ</option>
-			<option value="CA">CA</option>
+            <div class="form-group" >
+                <label for="address">Street Address*:</label>
+                        <input type="text" class="form-control" placeholder="Address" id="streetInput" name="streetInput" autocomplete="on"> 
+            </div>
+        </div>
+        <div class="col-lg-3" class="form-group" >
+            <label for="City">City*:</label>
+                <input type="text" class="form-control" placeholder="City" id="cityInput" name="cityInput" autocomplete="on">
+        </div>
+        <div class="col-lg-2" class="form-group" >
+            <label for="State">State*:</label>
+                <select type="state" class="form-control" placeholder="State" id="stateInput" name="stateInput">
+                    <option value=""></option>
+                    <option value="AL">AL</option>
+                    <option value="AR">AR</option>
+                    <option value="AZ">AZ</option>
+                    <option value="CA">CA</option>
 
-			<option value="CO">CO</option>
-			<option value="CT">CT</option>
-			<option value="DC">DC</option>
-			<option value="DE">DE</option>
+                    <option value="CO">CO</option>
+                    <option value="CT">CT</option>
+                    <option value="DC">DC</option>
+                    <option value="DE">DE</option>
 
-			<option value="FL">FL</option>
-			<option value="GA">GA</option>
-			<option value="HI">HI</option>
-			<option value="IA">IA</option>
+                    <option value="FL">FL</option>
+                    <option value="GA">GA</option>
+                    <option value="HI">HI</option>
+                    <option value="IA">IA</option>
 
-			<option value="ID">ID</option>
-			<option value="IL">IL</option>
-			<option value="IN">IN</option>
-			<option value="KS">KS</option>
+                    <option value="ID">ID</option>
+                    <option value="IL">IL</option>
+                    <option value="IN">IN</option>
+                    <option value="KS">KS</option>
 
-			<option value="KY">KY</option>
-			<option value="LA">LA</option>
-			<option value="MA">MA</option>
-			<option value="MD">MD</option>
+                    <option value="KY">KY</option>
+                    <option value="LA">LA</option>
+                    <option value="MA">MA</option>
+                    <option value="MD">MD</option>
 
-			<option value="ME">ME</option>
-			<option value="MI">MI</option>
-			<option value="MN">MN</option>
-			<option value="MO">MO</option>
+                    <option value="ME">ME</option>
+                    <option value="MI">MI</option>
+                    <option value="MN">MN</option>
+                    <option value="MO">MO</option>
 
-			<option value="MS">MS</option>
-			<option value="MT">MT</option>
-			<option value="NC">NC</option>
-			<option value="ND">ND</option>
+                    <option value="MS">MS</option>
+                    <option value="MT">MT</option>
+                    <option value="NC">NC</option>
+                    <option value="ND">ND</option>
 
-			<option value="NE">NE</option>
-			<option value="NH">NH</option>
-			<option value="NJ">NJ</option>
-			<option value="NM">NM</option>
+                    <option value="NE">NE</option>
+                    <option value="NH">NH</option>
+                    <option value="NJ">NJ</option>
+                    <option value="NM">NM</option>
 
-			<option value="NV">NV</option>
-			<option value="NY">NY</option>
-			<option value="OH">OH</option>
-			<option value="OK">OK</option>
+                    <option value="NV">NV</option>
+                    <option value="NY">NY</option>
+                    <option value="OH">OH</option>
+                    <option value="OK">OK</option>
 
-			<option value="OR">OR</option>
-			<option value="PA">PA</option>
-			<option value="RI">RI</option>
-			<option value="SC">SC</option>
+                    <option value="OR">OR</option>
+                    <option value="PA">PA</option>
+                    <option value="RI">RI</option>
+                    <option value="SC">SC</option>
 
-			<option value="SD">SD</option>
-			<option value="TN">TN</option>
-			<option value="TX">TX</option>
-			<option value="UT">UT</option>
+                    <option value="SD">SD</option>
+                    <option value="TN">TN</option>
+                    <option value="TX">TX</option>
+                    <option value="UT">UT</option>
 
-			<option value="VA">VA</option>
-			<option value="VT">VT</option>
-			<option value="WA">WA</option>
-			<option value="WI">WI</option>
+                    <option value="VA">VA</option>
+                    <option value="VT">VT</option>
+                    <option value="WA">WA</option>
+                    <option value="WI">WI</option>
 
-			<option value="WV">WV</option>
-			<option value="WY">WY</option>
-          </select>
-</div>
-<div class="col-lg-2" > 
-  <button id="button1" type="submit" class="btn btn-warning" name="btnsubmit" value="Submit form" >Submit</button>
-</div>
-<div class="col-lg-1">
-  <img id="zillowImage" src="http://www.zillow.com/widgets/GetVersionedResource.htm?path=/static/logos/Zillowlogo_150x40_rounded.gif" width="150" height="40" alt="Zillow Real Estate Search" />
-</div>
-
-</form>	
-        <br>
-        <textarea id="errorbox"></textarea>
-        <br>
-        <hr>
-</div>
-        
-      
-        <ul class="nav nav-tabs" role="tablist" id="mytab">
+                    <option value="WV">WV</option>
+                    <option value="WY">WY</option>
+            </select>
+        </div>
+        <div class="col-lg-2" > 
+            <button id="button1" type="submit" class="btn btn-warning" name="btnsubmit" value="Submit form" >Submit</button>
+        </div>
+        <div class="col-lg-1">
+            <img id="zillowImage" src="http://www.zillow.com/widgets/GetVersionedResource.htm?path=/static/logos/Zillowlogo_150x40_rounded.gif" width="150" height="40" alt="Zillow Real Estate Search" />
+        </div>
+    </form>	
+    <br>
+    <hr>
+</div> 
+<div id="maintable">
+<ul class="nav nav-tabs" role="tablist" id="mytab">
             <li class="active">
                 <a href="#Basic-Info" role="tab" data-toggle="tab">Basic Info</a>
             </li>
             <li>
                 <a href="#chart" role="tab" data-toggle="tab">Historical Zestimates</a>
             </li>
-        </ul>
-        
-    <div class="tab-pane fade in active" id="Basic-Info">
-        <div id="tableDiv" class='table-responsive'>
-            <table id="basic-info" class="table table-striped">
+        </ul>  
+   
+    
+        <div class="tab-pane fade in active" id="Basic-Info">
+            <div id="tableDiv" class='table-responsive'>
+                <table id="basic-info" class="table table-striped">
                 <tr>
-                    <td class="align-left" colspan="5">See more details for <a href="#"class="toZillow"> address</a> on Zillow</td>
-                        <td>
-    <a href="javascript:fb_post();"><img id="fbimage" src="http://static.excelined.org/wp-content/uploads/Share-on-Facebook.png"></a>
-                    </td>
-    </tr>
-    <tr>
+                    <td class="align-left" colspan="3">See more details for <a id="addresslink"></a>on Zillow</td>
+                    <td><a href="javascript:fb_post();"><img id="fbimage" src="http://static.excelined.org/wp-content/uploads/Share-on-Facebook.png"> </a></td>
+                </tr>
+           
+                <tr>
                         <td class="align-left">Property Type:</td>
-                        <td class="align-right"></td>
+                        <td class="align-right" id="property"></td>
                         <td class="align-left">Last Sold Price:</td>
-                        <td class="align-right">$</td>
-    </tr>
-    <tr>
+                        <td class="align-right" id="lastsoldprice">$</td>
+                </tr>
+                <tr>
                         <td class="align-left">Year Built:</td>
-                        <td class="align-right"></td>
+                        <td class="align-right" id="yearbuilt"></td>
                         <td class="align-left">Last Sold Date:</td>
-                        <td class="align-right">$</td>
-    </tr>
-    <tr>
+                        <td class="align-right" id="lastsolddate">$</td>
+                </tr>
+                <tr>
                         <td class="align-left">Lot Size:</td>
-                        <td class="align-right"></td>
+                        <td class="align-right" id="lotsize"></td>
                         <td class="align-left">Zestimate&reg; Property Estimate as of :</td>
-                        <td class="align-right">$</td>
-    </tr>
-    <tr>
+                        <td class="align-right" id="zestimate">$</td>
+                </tr>
+                <tr>
                         <td class="align-left">Finished Area:</td>
-                        <td class="align-right"></td>
+                        <td class="align-right" id="finishedarea"></td>
                         <td class="align-left">30 Days Overall Change:</td>
-                        <td class="align-right">$</td>
-    </tr>
-    <tr>
+                        <td class="align-right" id="change"></td>
+                </tr>
+                <tr>
                         <td class="align-left">Bathrooms:</td>
-                        <td class="align-right"></td>
+                        <td class="align-right" id="bathrooms"></td>
                         <td class="align-left">All Time Property Range:</td>
-                        <td class="align-right">$</td>
-    </tr>
-    <tr>
+                        <td class="align-right" id="range">$</td>
+                </tr>
+                <tr>
                         <td class="align-left">Bedrooms:</td>
-                        <td class="align-right"></td>
+                        <td class="align-right" id="bedrooms"></td>
                         <td class="align-left">Rent Zestimate &reg; Valuation as of:</td>
-                        <td class="align-right">$</td>
-    </tr>
-    <tr>
+                        <td class="align-right" id="rent">$</td>
+                </tr>
+                <tr>
                         <td class="align-left">Tax Assessment Year:</td>
-                        <td class="align-right"></td>
+                        <td class="align-right" id="year"></td>
                         <td class="align-left">30 Days Rent Change:</td>
-                        <td class="align-right">$</td>
-    </tr>
-    <tr>
+                        <td class="align-right" id="rentchange"></td>
+                </tr>
+                <tr>
                         <td class="align-left">Tax Assessment:</td>
-                        <td class="align-right"></td>
+                        <td class="align-right" id="tax"></td>
                         <td class="align-left">All Time Rent Change:</td>
-                        <td class="align-right">$</td>
-    </tr>
+                        <td class="align-right" id="allrange">$</td>
+                </tr>
             </table>
         </div>
-        </div>
-</body>
+    </div> 
+     <div class="tab-pane fade in active" id="chart">
+        <div id="myCarousel" class="carousel slide">
+			<!-- Carousel slides -->
+			<div class="carousel-inner">
+				<div class="active item">
+					<img src="img/slider1.png">
+					<div class="carousel-caption">
+						<h4>DesignLoud, LLC</h4>
+						<p>This is a sample caption for our Twitter Bootstrap tutorial.</p>
+					</div>
+				</div>
+				<div class="item">
+					<img src="img/slider2.png">
+					<div class="carousel-caption">
+						<h4>DesignLoud, LLC</h4>
+						<p>This is a sample caption for our Twitter Bootstrap tutorial.</p>
+					</div>
+				</div>
+                <div class="item">
+					<img src="img/slider2.png">
+					<div class="carousel-caption">
+						<h4>DesignLoud, LLC</h4>
+						<p>This is a sample caption for our Twitter Bootstrap tutorial.</p>
+					</div>
+				</div>
+			</div>
 
-  <!--752542048155527-->
+			<!-- Carousel nav -->
+			<a class="carousel-control left" href="#myCarousel" data-slide="prev"> 
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+			<a class="carousel-control right" href="#myCarousel" data-slide="next"></a>
+             <span class="glyphicon glyphicon-chevron-right"></span>
+            <ol class="carousel-indicators indicatorColor">
+                                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#myCarousel" data-slide-to="1"></li>
+                                <li data-target="#myCarousel" data-slide-to="2"></li>
+                            </ol>
+		</div>
+    </div>
+    
+</div>
+</body>
 
 
 <script>
     
     </script>
 
-
-  <!--
-         success:routine for processing the(json.parse to extract info) result
-         error:handling error
-         htmlresult+="<div class=carousel-caption><div class=chartCaption><h3>Historical Zestimates for the past 1 year</h3><p>"+address+"</p>";
-            //after data extraction
-            document.getElementById("carousel").innerHTML=htmlresult;
-            
-<!--Set up tabs where results-->
-</html>
