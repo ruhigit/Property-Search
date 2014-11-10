@@ -1,41 +1,14 @@
 <html>
 <head>
 <meta name="viewport" content=" width=device-width,initial-scale=1,maximum-scale=1"/>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js">
-</script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript">
-$("document").ready(function(){
-  $("#houseform").submit(function(){
-    var data = {
-      "action": "test"
-    };
-    data = $(this).serialize() + "&" + $.param(data);
-    $.ajax({
-      type: "POST",
-      dataType: "json",
-      url: "index.php", //Relative or absolute path to response.php file
-      data: data,
-      success: function(data) {
-        $(".the-return").html(
-          "Favorite beverage: " + data["streetInput"] + "<br />Favorite restaurant: " + data["cityInput"] + "<br />Gender: " + data["stateInput"] + "<br />JSON: " + data["json"]
-        );
- 
-        alert("Form submitted successfully.\nReturned json: " + data["json"]);
-      }
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+ <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+   
+
+
         
-        
-        
-    
-    });
-    return false;
-  });
-});
-</script>
-    
 </head>
     <style>
         body{
@@ -61,11 +34,61 @@ $("document").ready(function(){
         #fbimage{
             position: relative;
             float: right;
+            height: 30%;
+                width:20%;
         }
     </style>
 <body>
+    
+    <!-- initialize fb post -->
+<script>
+    window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '752542048155527',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.1' // use version 2.1
+  });
+    (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+    }
+    function fb_post(){
+        alert("Inside fb_post()");
+        FB.ui({
+                
+                method:'feed',
+                //name:"1248 West Adams Blvd",
+                caption:"Property Information from Zillow.com",
+                //description:Sample,
+                display:'popup',
+                link:'https://developers.facebook.com/docs/',
+               // picture:"grab 1 yr chart from JSON"
+            },
+            
+    function(response)
+            {
+                if(response && response.post_id){
+                    alert("Posted Successfully");
+                }
+                else{
+                    alert("Not Posted");
+                }
+                
+            });
+            }
+</script>
+
+
+    
+    
     <h3>Search Your Property Here</h3><br> 
-    <form class="form-inline" role="form" id="houseform"  action="" class="js-ajax-php-json" method="post" accept-charset="utf-8">
+    <form class="form-inline" role="form" id="houseform"  action="" class="js-ajax-php-json" method="get" accept-charset="utf-8">
         <div class="col-lg-4">
   <div class="form-group" >
       <label for="address">Street Address*:</label>
@@ -145,68 +168,20 @@ $("document").ready(function(){
           </select>
 </div>
 <div class="col-lg-2" > 
-  <button id="button1" type="submit" class="btn btn-warning" name="submit" value="Submit form" >Submit</button>
+  <button id="button1" type="submit" class="btn btn-warning" name="btnsubmit" value="Submit form" >Submit</button>
 </div>
 <div class="col-lg-1">
   <img id="zillowImage" src="http://www.zillow.com/widgets/GetVersionedResource.htm?path=/static/logos/Zillowlogo_150x40_rounded.gif" width="150" height="40" alt="Zillow Real Estate Search" />
 </div>
 
-</form>
-    <div class="the-return">
-  [HTML is replaced when successful.]
-</div>	
+</form>	
         <br>
         <textarea id="errorbox"></textarea>
         <br>
         <hr>
 </div>
-        <script>
-  // When the browser is ready...
-  $(function() {
-  
-    // Setup form validation on the #houseform element
-    $("#houseform").validate({
-    
-        //wrapper:"div",
-        //errorLabelContainer:"#errorBox",
-        // Specify the validation rules
-        rules: {
-            streetInput: "required",
-            cityInput: "required",
-            stateInput: "required",
-        },
         
-        // Specify the validation error messages
-        messages: {
-            streetInput: "This field is required",
-            cityInput: "This field is required",
-            stateInput: "This field is required",
-        },
-        submitHandler: function(form) {
-            form.submit();
-        }
-    });
-
-  });
-</script>
-
-        <!--
-  $.ajax({
-      url:'http://zillowruhi-env.elasticbeanstalk.com',
-      data{
-      submit:'1',
-      street:123,
-      city:la,
-      state:Ca
-  },
-type:'POST',
-         success:routine for processing the(json.parse to extract info) result
-         error:handling error
-         htmlresult+="<div class=carousel-caption><div class=chartCaption><h3>Historical Zestimates for the past 1 year</h3><p>"+address+"</p>";
-            //after data extraction
-            document.getElementById("carousel").innerHTML=htmlresult;
-            
-<!--Set up tabs where results-->
+      
         <ul class="nav nav-tabs" role="tablist" id="mytab">
             <li class="active">
                 <a href="#Basic-Info" role="tab" data-toggle="tab">Basic Info</a>
@@ -221,8 +196,8 @@ type:'POST',
             <table id="basic-info" class="table table-striped">
                 <tr>
                     <td class="align-left" colspan="5">See more details for <a href="#"class="toZillow"> address</a> on Zillow</td>
-                        <td><img id="fbimage" src="http://static.excelined.org/wp-content/uploads/Share-on-Facebook.png" height="40%">
-    <a href=\"javascript:fb_post();\"></a>
+                        <td>
+    <a href="javascript:fb_post();"><img id="fbimage" src="http://static.excelined.org/wp-content/uploads/Share-on-Facebook.png"></a>
                     </td>
     </tr>
     <tr>
@@ -230,35 +205,116 @@ type:'POST',
                         <td class="align-right"></td>
                         <td class="align-left">Last Sold Price:</td>
                         <td class="align-right">$</td>
-                </tr>
+    </tr>
+    <tr>
+                        <td class="align-left">Year Built:</td>
+                        <td class="align-right"></td>
+                        <td class="align-left">Last Sold Date:</td>
+                        <td class="align-right">$</td>
+    </tr>
+    <tr>
+                        <td class="align-left">Lot Size:</td>
+                        <td class="align-right"></td>
+                        <td class="align-left">Zestimate&reg; Property Estimate as of :</td>
+                        <td class="align-right">$</td>
+    </tr>
+    <tr>
+                        <td class="align-left">Finished Area:</td>
+                        <td class="align-right"></td>
+                        <td class="align-left">30 Days Overall Change:</td>
+                        <td class="align-right">$</td>
+    </tr>
+    <tr>
+                        <td class="align-left">Bathrooms:</td>
+                        <td class="align-right"></td>
+                        <td class="align-left">All Time Property Range:</td>
+                        <td class="align-right">$</td>
+    </tr>
+    <tr>
+                        <td class="align-left">Bedrooms:</td>
+                        <td class="align-right"></td>
+                        <td class="align-left">Rent Zestimate &reg; Valuation as of:</td>
+                        <td class="align-right">$</td>
+    </tr>
+    <tr>
+                        <td class="align-left">Tax Assessment Year:</td>
+                        <td class="align-right"></td>
+                        <td class="align-left">30 Days Rent Change:</td>
+                        <td class="align-right">$</td>
+    </tr>
+    <tr>
+                        <td class="align-left">Tax Assessment:</td>
+                        <td class="align-right"></td>
+                        <td class="align-left">All Time Rent Change:</td>
+                        <td class="align-right">$</td>
+    </tr>
             </table>
         </div>
         </div>
 </body>
-    <!--
-<script>
-    function fb_post(){
-        FB.ui(
-            {
-                method:'feed',
-                name:grab the street,city and state from JSON,
-                caption:"Property Information from Zillow.com",
-                description:Grab the last sold price from json,
-                display:'popup',
-                link:grab home details,
-                picture:grab 1 yr chart from JSON},
-            
-    function(response)
-            {
-                if(response && response.post_id){
-                    alert("Posted Successfully");
+
+<script type="text/javascript">
+$(document).ready(function (e) {
+
+            $("#houseform").validate({
+
+                rules:
+                {
+                    streetInput: "required",
+                    cityInput: "required",
+                    stateInput: "required"
+                },
+                messages:
+                {
+                    streetInput: "This field is required",
+                    cityInput: "This field is required",
+                    stateInput: "This field is required",
+                },
+                submitHandler: function (form) {
+
+                    var city = form[1].value;
+                    var street = form[0].value;
+                    var state = form[2].value;
+					$("#main").hide();
+                    alert(city + " - " + street + " - " + state);
+
+                    $.ajax
+                    ({
+
+                        url: "index.php",
+                        type: 'GET',
+                        data: $.param({ stateInput: state, cityInput: city, streetInput: street }),
+                        success: function (data, textStatus, jqxhr)
+                        {
+                           alert("success");
+                            /*console.log(data);
+                            alert(data.value);*/
+                            /* write your code after getting the response here
+							// change the names and everything */
+                       },
+                        error: function (jqxhr, textStatus, errorMessage) {
+                            /*console.log(errorMessage);*/
+                        }
+                    });
                 }
-                else{
-                    alert("Not Posted");
-                }
-                
+
             });
-            }
+        });
+</script>
+  <!--752542048155527-->
+
+
+<script>
+    
     </script>
-     */-->
+
+
+  <!--
+         success:routine for processing the(json.parse to extract info) result
+         error:handling error
+         htmlresult+="<div class=carousel-caption><div class=chartCaption><h3>Historical Zestimates for the past 1 year</h3><p>"+address+"</p>";
+            //after data extraction
+            document.getElementById("carousel").innerHTML=htmlresult;
+            
+<!--Set up tabs where results-->
 </html>
