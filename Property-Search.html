@@ -7,7 +7,102 @@
  <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
    
 
+<script type="text/javascript">
+$(document).ready(function (e) {
 
+            $("#houseform").validate({
+
+                rules:
+                {
+                    streetInput: "required",
+                    cityInput: "required",
+                    stateInput: "required"
+                },
+                messages:
+                {
+                    streetInput: "This field is required",
+                    cityInput: "This field is required",
+                    stateInput: "This field is required",
+                },
+                submitHandler: function (form) {
+
+                    var city = form[1].value;
+                    var street = form[0].value;
+                    var state = form[2].value;
+					$("#main").hide();
+                    alert(city + " - " + street + " - " + state);
+
+                    $.ajax
+                    ({
+
+                        url: "index.php",
+                        type: 'GET',
+                        data: $.param({ stateInput: state, cityInput: city, streetInput: street }),
+                        dataType:'json',
+                        success: function (data, textStatus, jqxhr)
+                        {
+                           alert("success");
+                            /*var myobj=data;
+                            console.log(myobj);*/
+                            /*console.log(data);
+                            alert(data.value);*/
+                            /* write your code after getting the response here
+							// change the names and everything */
+                       },
+                        error: function (jqxhr, textStatus, errorMessage) {
+                            console.log(errorMessage);
+                        }
+                    });
+                }
+
+            });
+        });
+</script>
+<script>
+    window.fbAsyncInit = function() {
+        console.log("hey");
+         FB.init({
+    appId      : '752542048155527',
+    //status     : true,
+    xfbml      : true,
+    version    : 'v2.1'
+  });
+    };
+    (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+    <!-- initialize fb post -->
+
+   
+    function fb_post(){
+        FB.ui({
+                
+                method:'feed',
+                name:"1248 West Adams Blvd",
+                caption:"Property Information from Zillow.com",
+                description:"Sample",
+                display:'popup',
+                link:'https://developers.facebook.com/docs/',
+               // picture:"grab 1 yr chart from JSON"
+            },
+            
+    function(response)
+            {
+                if(response && response.post_id){
+                    alert("Posted Successfully");
+                }
+                else{
+                    alert("Not Posted");
+                }
+                
+            });
+            }
+    
+</script>
         
 </head>
     <style>
@@ -40,49 +135,6 @@
     </style>
 <body>
     
-    <!-- initialize fb post -->
-<script>
-    window.fbAsyncInit = function() {
-  FB.init({
-    appId      : '752542048155527',
-    cookie     : true,  // enable cookies to allow the server to access 
-                        // the session
-    xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.1' // use version 2.1
-  });
-    (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-    }
-    function fb_post(){
-        alert("Inside fb_post()");
-        FB.ui({
-                
-                method:'feed',
-                //name:"1248 West Adams Blvd",
-                caption:"Property Information from Zillow.com",
-                //description:Sample,
-                display:'popup',
-                link:'https://developers.facebook.com/docs/',
-               // picture:"grab 1 yr chart from JSON"
-            },
-            
-    function(response)
-            {
-                if(response && response.post_id){
-                    alert("Posted Successfully");
-                }
-                else{
-                    alert("Not Posted");
-                }
-                
-            });
-            }
-</script>
 
 
     
@@ -253,54 +305,6 @@
         </div>
 </body>
 
-<script type="text/javascript">
-$(document).ready(function (e) {
-
-            $("#houseform").validate({
-
-                rules:
-                {
-                    streetInput: "required",
-                    cityInput: "required",
-                    stateInput: "required"
-                },
-                messages:
-                {
-                    streetInput: "This field is required",
-                    cityInput: "This field is required",
-                    stateInput: "This field is required",
-                },
-                submitHandler: function (form) {
-
-                    var city = form[1].value;
-                    var street = form[0].value;
-                    var state = form[2].value;
-					$("#main").hide();
-                    alert(city + " - " + street + " - " + state);
-
-                    $.ajax
-                    ({
-
-                        url: "index.php",
-                        type: 'GET',
-                        data: $.param({ stateInput: state, cityInput: city, streetInput: street }),
-                        success: function (data, textStatus, jqxhr)
-                        {
-                           alert("success");
-                            /*console.log(data);
-                            alert(data.value);*/
-                            /* write your code after getting the response here
-							// change the names and everything */
-                       },
-                        error: function (jqxhr, textStatus, errorMessage) {
-                            /*console.log(errorMessage);*/
-                        }
-                    });
-                }
-
-            });
-        });
-</script>
   <!--752542048155527-->
 
 
