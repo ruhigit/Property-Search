@@ -2,6 +2,7 @@
 <head>
 <meta name="viewport" content=" width=device-width,initial-scale=1,maximum-scale=1"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
  <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
@@ -85,7 +86,7 @@ $("#nomatcharea").hide();
                 method:'feed',
                 name:window.zillowaddress,
                 caption:"Property Information from Zillow.com",
-                description:"Last Sold Price"+window.lastsoldprice+" 30 Days Overall Change "+window.change,
+                description:"Last Sold Price "+window.lastsoldprice+" 30 Days Overall Change "+window.change,
                 display:'popup',
                 link:window.addressl,
                 picture:window.picture
@@ -115,18 +116,32 @@ $("#nomatcharea").hide();
             $("#lotsize").text(data.result.lotSizeSqFt);
             $("#zestimate").text(data.result.estimateAmount);
             $("#finishedarea").text(data.result.finishedSqFt);
-            if (data.result.estimateValueChangeSign=='-')
-                var img=data.result.imgn;
-            else
-                var img=data.result.imgp;
-            var a=document.getElementById("imgchange");
-            a.src=img;
-            if (data.result.restimateValueChangeSign=='-')
-                var img=data.result.imgn;
-            else
-                var img=data.result.imgp;
-            var a=document.getElementById("rimgchange");
-            a.src=img;
+            
+            if(data.result.estimateValueChange!=="N/A")
+            {
+                if (data.result.estimateValueChangeSign=='-')
+                    var img=data.result.imgn;
+                else
+                    var img=data.result.imgp;
+                
+                var a=document.getElementById("imgchange");
+                a.src=img;
+            }
+            else{
+                  
+            }
+            if(data.result.restimateValueChange!=="N/A"){
+                 if (data.result.restimateValueChangeSign=='-')
+                    var img=data.result.imgn;
+                else
+                    var img=data.result.imgp;
+                var a=document.getElementById("rimgchange");
+                a.src=img;
+            }
+            else{
+                  
+            }
+           
             $("#change").text(data.result.estimateValueChange);
             $("#bathrooms").text(data.result.bathrooms);
             $("#range").text(data.result.estimateValuationRangeLow+"- "+data.result.estimateValueationRangeHigh);
@@ -146,7 +161,11 @@ $("#nomatcharea").hide();
             window.zillowaddress=data.result.street+","+data.result.city+","+data.result.state+"-"+data.result.zipcode;
             var a = document.getElementById("addresslink");
             a.href=window.addressl;
-            $("#zadd").text(data.result.street+","+data.result.city+","+data.result.state+"-"+data.result.zipcode);
+       document.getElementById("zadd").innerHTML=data.result.street+","+data.result.city+","+data.result.state+"-"+data.result.zipcode;   
+            document.getElementById("zadd1").innerHTML=data.result.street+","+data.result.city+","+data.result.state+"-"+data.result.zipcode;
+            document.getElementById("zadd2").innerHTML=data.result.street+","+data.result.city+","+data.result.state+"-"+data.result.zipcode; 
+        document.getElementById("zadd3").innerHTML=data.result.street+","+data.result.city+","+data.result.state+"-"+data.result.zipcode;   
+            //$("#zadd").text(data.result.street+","+data.result.city+","+data.result.state+"-"+data.result.zipcode);
             
             document.getElementById("chart1").src=data.chart.oneyear.url;
             document.getElementById("chart2").src=data.chart.fiveyears.url;
@@ -158,19 +177,23 @@ $("#nomatcharea").hide();
 </head>
     <style>
         body{
-            padding: 5px 10px 10px 20px;
+            /*padding: 1px 20px 1px 20px;*/
             background-image:url("image.jpg");
         }
         .control-label{
             color: orange;
         }
-        label.error,#nomatcharea {
+        #houseform label.error {
         color: #FB3A3A;
-        text-align: center;
-        margin-left: 20px;
+        text-align: right;
+        margin-left: 40px;
 }
-        input.error,select.error{
-            border-color: red;
+        #nomatcharea{
+            color: red;
+            text-align: center;
+        }
+        #houseform input.error,form select.error{
+            border : 1px solid red;
         }
         #zillowImage{
             position: relative;
@@ -180,18 +203,59 @@ $("#nomatcharea").hide();
             position: relative;
             float: right;
             height: 30%;
-                width:20%;
+            width:30%;
         }
         #maintable{
+            color: black;
+        }
+        #chart,#Basic-Info{
             background: white;
         }
-        #chart1,#chart2,#chart3{
-            align-content: center;
+       .carousel-inner > .item > img {
+    margin: 0 auto;
+}
+        .carousel-inner > .item > img >div {
+        margin-left: 0 auto;
+}
+        
+        #ora{
+            color: orange;
         }
+        h4,p{
+            color: white;
+            text-align: left;
+        }
+        center{
+            color: white;
+        }
+        .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        bottom:2px;
+        height: 25%;
+            width:100%;
+            margin-right: 0px;
+            left: 0;
+            right: 0;
+            padding-bottom: 80px;
+            padding-top: 0px;
+        }
+
+ol.carousel-indicators {
+     margin-left: 0px;
+    color: orange;
+}
+        .carousel-indicators .active {
+            background-color: orange;
+        }
+        @-moz-document url-prefix() {
+    fieldset {
+        display: table-cell;
+    }
+}
     </style>
 <body>
     
-    <h3>Search Your Property Here</h3><br> 
+    <h3><span id="ora">Search Your Property Here</span></h3><br> 
     <form class="form-inline" role="form" id="houseform"  action="" class="js-ajax-php-json" method="get" accept-charset="utf-8">
         <div class="col-lg-4">
             <div class="form-group" >
@@ -299,56 +363,57 @@ $("#nomatcharea").hide();
                 <table id="basic-info" class="table table-striped">
                 <tr>
                     <td class="align-left" colspan="3">See more details for <a id="addresslink"><span id="zadd"></span></a>on Zillow</td>
-                    <td><a href="javascript:fb_post();"><img id="fbimage" src="http://static.excelined.org/wp-content/uploads/Share-on-Facebook.png"> </a></td>
+                     
+                    <td class="align-right"><a href="javascript:fb_post();"><img id="fbimage" src="http://static.excelined.org/wp-content/uploads/Share-on-Facebook.png"> </a></td>
                 </tr>
            
                 <tr>
                         <td class="align-left">Property Type:</td>
-                        <td class="align-right" id="property"></td>
+                        <td align="right" id="property"></td>
                         <td class="align-left">Last Sold Price:</td>
-                        <td class="align-right" id="lastsoldprice">$</td>
+                        <td align="right" id="lastsoldprice">$</td>
                 </tr>
                 <tr>
                         <td class="align-left">Year Built:</td>
-                        <td class="align-right" id="yearbuilt"></td>
+                        <td align="right" id="yearbuilt"></td>
                         <td class="align-left">Last Sold Date:</td>
-                        <td class="align-right" id="lastsolddate">$</td>
+                        <td align="right" id="lastsolddate">$</td>
                 </tr>
                 <tr>
                         <td class="align-left">Lot Size:</td>
-                        <td class="align-right" id="lotsize"></td>
-                        <td class="align-left" >Zestimate&reg; Property Estimate as of<span id="asof"></span>:</td>
-                        <td class="align-right" id="zestimate">$</td>
+                        <td align="right" id="lotsize"></td>
+                        <td class="align-left" >Zestimate&reg; Property Estimate as of <span id="asof"></span></td>
+                        <td align="right" id="zestimate">$</td>
                 </tr>
                 <tr>
                         <td class="align-left">Finished Area:</td>
-                        <td class="align-right" id="finishedarea"></td>
+                        <td align="right" id="finishedarea"></td>
                         <td class="align-left">30 Days Overall Change:</td>
-                        <td class="align-right"><img id="imgchange"/><span id="change"></span></td>
+                        <td align="right"><img id="imgchange"/><span id="change"></span></td>
                 </tr>
                 <tr>
                         <td class="align-left">Bathrooms:</td>
-                        <td class="align-right" id="bathrooms"></td>
+                        <td align="right" id="bathrooms"></td>
                         <td class="align-left">All Time Property Range:</td>
-                        <td class="align-right" id="range">$</td>
+                        <td align="right" id="range">$</td>
                 </tr>
                 <tr>
                         <td class="align-left">Bedrooms:</td>
-                        <td class="align-right" id="bedrooms"></td>
+                        <td align="right" id="bedrooms"></td>
                         <td class="align-left">Rent Zestimate &reg; Valuation as of <span id="rasof">:</td>
-                        <td class="align-right" id="rent">$</td>
+                        <td align="right" id="rent">$</td>
                 </tr>
                 <tr>
                         <td class="align-left">Tax Assessment Year:</td>
-                        <td class="align-right" id="year"></td>
+                        <td align="right" id="year"></td>
                         <td class="align-left">30 Days Rent Change:</td>
-                        <td class="align-right"><img id="rimgchange"/><span id="rentchange"></span></td>
+                        <td align="right"><img id="rimgchange"/><span id="rentchange"></span></td>
                 </tr>
                 <tr>
                         <td class="align-left">Tax Assessment:</td>
-                        <td class="align-right" id="tax"></td>
+                        <td align="right" id="tax"></td>
                         <td class="align-left">All Time Rent Change:</td>
-                        <td class="align-right" id="allrange">$</td>
+                       <td align="right" id="allrange">$</td>
                 </tr>
             </table>
         </div>
@@ -358,11 +423,7 @@ $("#nomatcharea").hide();
       <div role="tabpane1" class="tab-pane fade" id="chart" role="tabpanel">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
   <!-- Indicators -->
-            
-            
-      
-            
-  <ol class="carousel-indicators indicatorColor">
+<ol class="carousel-indicators">
     <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
     <li data-target="#carousel-example-generic" data-slide-to="1"></li>
     <li data-target="#carousel-example-generic" data-slide-to="2"></li>
@@ -371,24 +432,24 @@ $("#nomatcharea").hide();
 			<!-- Carousel slides -->
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
-					 <img id="chart1"/>
+					 <img id="chart1" alt="No Image Found"/>
 					<div class="carousel-caption">
 						<h4>Historical Zestimates for the past 1 year</h4>
-                        <p><span id="zadd"></span></p>
+                        <p id="zadd1"></p>
 					</div>
 				</div>
 				<div class="item">
-					<img id="chart2"/>
+					<img id="chart2" alt="No Image Found"/>
 					<div class="carousel-caption">
 						<h4>Historical Zestimates for the past 5 years</h4>
-                        <p><span id="zadd"></span></p>
+                        <p id="zadd2"></p>
 					</div>
 				</div>
                 <div class="item">
-					<img id="chart3"/>
+					<img id="chart3" alt="No Image Found"/>
 					<div class="carousel-caption">
 						<h4>Historical Zestimates for the past 10 years</h4>
-                        <p><span id="zadd"></span></p>
+                        <p id="zadd3"></p>
 					</div>
 				</div>
 			</div>
@@ -401,10 +462,17 @@ $("#nomatcharea").hide();
     <span class="glyphicon glyphicon-chevron-right"></span>
     <span class="sr-only">Next</span>
   </a>
+
+</div>
 		</div>
     </div>
         </div>
     </div>
+    <div><center>
+		&copy Zillow, Inc., 2006-2014. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm"><span id="ora">Terms of Use</span></a>
+		<br>
+        <a href="http://www.zillow.com/zestimate/"><span id="ora">What's a Zestimate?</span></a>
+		</div></center>
 </body>
 
 
